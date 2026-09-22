@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+!.env.example
+frontend/node_modules
+frontend/dist
+backend/__pycache__
+backend/**/__pycache__
+backend/**/*.pyc
+docs/
+*.md
+.claude/
+backend/uploads/*
+tests/e2e/report/

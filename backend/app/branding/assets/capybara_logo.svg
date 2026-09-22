@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Capybara CMDB">
+  <circle cx="32" cy="32" r="32" fill="#8B5E3C"/>
+  <ellipse cx="32" cy="38" rx="20" ry="15" fill="#C68B59"/>
+  <ellipse cx="18" cy="21" rx="7" ry="6" fill="#8B5E3C"/>
+  <ellipse cx="46" cy="21" rx="7" ry="6" fill="#8B5E3C"/>
+  <ellipse cx="18" cy="21" rx="3.4" ry="2.8" fill="#5C3D26"/>
+  <ellipse cx="46" cy="21" rx="3.4" ry="2.8" fill="#5C3D26"/>
+  <ellipse cx="32" cy="34" rx="17" ry="12.5" fill="#D9A876"/>
+  <circle cx="23" cy="32" r="2.6" fill="#2E2018"/>
+  <circle cx="41" cy="32" r="2.6" fill="#2E2018"/>
+  <ellipse cx="32" cy="42" rx="7" ry="5" fill="#F0CBA0"/>
+  <circle cx="32" cy="40" r="1.6" fill="#2E2018"/>
+</svg>

@@ -1,0 +1,112 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cmdb-api:latest
+    restart: unless-stopped
+    env_file: .env
+    mem_limit: 512m
+    mem_reservation: 128m
+    volumes:
+      - uploads:/app/uploads
+      - backups:/app/backups
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # Alias explicite `cmdb-api` (au lieu du nom de service générique "api") :
+    # si ce réseau Traefik est partagé avec d'autres projets qui nomment
+    # aussi leur backend "api", un alias propre évite les collisions DNS
+    # entre conteneurs de projets différents sur le même réseau externe.
+    networks:
+      cmdb-internal:
+      traefik-public:
+        aliases:
+          - cmdb-api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cmdb.rule=Host(`${DOMAIN:-cmdb.capybara.example.com}`)"
+      - "traefik.http.routers.cmdb.entrypoints=websecure"
+      - "traefik.http.routers.cmdb.tls=true"
+      - "traefik.http.services.cmdb.loadbalancer.server.port=8000"
+      - "traefik.docker.network=traefik-public"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cmdb-api:latest
+    restart: unless-stopped
+    command: celery -A app.workers.celery_app worker --beat --loglevel=info --max-tasks-per-child=50
+    env_file: .env
+    mem_limit: 512m
+    mem_reservation: 128m
+    volumes:
+      - uploads:/app/uploads
+      - backups:/app/backups
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cmdb-internal
+      - traefik-public
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    mem_reservation: 64m
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cmdb}
+      POSTGRES_USER: ${POSTGRES_USER:-cmdb}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Alias explicite `cmdb-db` (au lieu du nom de service générique "db") :
+    # si un conteneur d'un autre projet rejoint ce réseau interne pour
+    # tester un connecteur, le résolveur DNS Docker peut devenir ambigu
+    # sur "db"/"redis" (chaque projet nommant souvent ses services pareil).
+    # Un alias propre au projet élimine cette ambiguïté.
+    networks:
+      cmdb-internal:
+        aliases:
+          - cmdb-db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cmdb} -d ${POSTGRES_DB:-cmdb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    mem_limit: 64m
+    mem_reservation: 16m
+    command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 50mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    networks:
+      cmdb-internal:
+        aliases:
+          - cmdb-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
+  backups:
+
+networks:
+  cmdb-internal:
+    internal: true
+  traefik-public:
+    external: true

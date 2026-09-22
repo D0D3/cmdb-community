@@ -1,0 +1,12 @@
+[cmdb]
+# URL de votre instance CMDB (sans slash final)
+url = https://cmdb.capybara.example.com
+
+# Token d'agent généré depuis Administration > Agents
+# NE PAS PARTAGER — permissions restrictives recommandées
+# Linux : chmod 600 cmdb_agent.conf
+# Windows : Propriétés > Sécurité > accès restreint au compte de service
+token = cagt_VOTRE_TOKEN_ICI
+
+# Type de machine : server | vm | workstation | terminal_server | network_device
+hw_subtype = workstation
