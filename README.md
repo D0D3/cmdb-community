@@ -271,9 +271,9 @@ Le nom de l'application, les couleurs et le logo se configurent depuis **Admin >
 
 ## Licence
 
-À définir — ce dépôt n'a pas encore de fichier `LICENSE` officiel. Une licence open source permissive sera ajoutée avant la première release publique.
+[MIT](LICENSE) — libre d'utilisation, de modification et de redistribution, y compris à des fins commerciales.
 
-Si vous forkez ce projet, une mention indiquant qu'il est basé sur **Capybara CMDB Community** est appréciée (non obligatoire).
+Si vous forkez ce projet, une mention indiquant qu'il est basé sur **Capybara CMDB Community** est appréciée (non obligatoire — voir la note en fin de [LICENSE](LICENSE)).
 
 ## Support & contribution
 
