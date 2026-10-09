@@ -38,7 +38,7 @@ Voir le détail complet dans [`docs/FEATURES.md`](docs/FEATURES.md).
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/<votre-org>/cmdb-community.git
+git clone https://github.com/D0D3/cmdb-community.git
 cd cmdb-community
 
 # 2. Configurer les variables d'environnement
@@ -191,7 +191,7 @@ L'application est alors accessible sur `http://localhost:8000`.
 ## Mise à jour
 
 ```bash
-git pull origin main
+git pull origin master
 docker compose build --no-cache
 docker compose up -d
 docker compose exec api alembic upgrade head

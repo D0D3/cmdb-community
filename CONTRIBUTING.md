@@ -17,7 +17,7 @@ Ouvrez une issue avant de commencer à coder, pour valider l'approche ensemble e
 ## Développement local
 
 ```bash
-git clone https://github.com/<votre-org>/cmdb-community.git
+git clone https://github.com/D0D3/cmdb-community.git
 cd cmdb-community
 cp .env.example .env   # renseignez les valeurs obligatoires
 docker compose build
